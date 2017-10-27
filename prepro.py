@@ -1,5 +1,5 @@
 '''
-
+    prepro.py - python code to clean and transform text data for use in classifier
 '''
 
 import numpy as np
@@ -10,9 +10,9 @@ import warnings
 from nltk.corpus import stopwords
 from nltk.tokenize import word_tokenize
 
-class preprocess:
+class preprocess(object):
 
-    def __init__(self, file_, cols, stop_flag=True):
+    def __init__(self, file_='NONE', cols=[], stop_flag=True):
         self.file_ = file_
         self.stop_flag = stop_flag
         self.cols = cols
@@ -20,17 +20,12 @@ class preprocess:
         if stop_flag:
             self.stop_words = set(stopwords.words('english'))
 
-    def pri(self):
-        print(self.file_)
-        print(self.cols)
-        print(self.stop_flag)
-
     def stop_remover(self,s):
         new_s = ''
         words = word_tokenize(s)
         for w in words:
-            if w not in self.stop_words:
-                new_s = new_s + ' ' + w
+            if w.lower() not in self.stop_words:
+                new_s = new_s + ' ' + w.lower()
         return new_s[1:]
 
     # -*- coding: utf-8 -*-
@@ -73,17 +68,18 @@ class preprocess:
         self.data['CONTENT'] = self.data['CONTENT'].apply(lambda x : re.sub('[^A-Za-z ]','',x))
         if self.stop_flag:
             self.data['CONTENT'] = self.data['CONTENT'].apply(lambda x : self.stop_remover(x))
-
         '''
-            collapse some of the feature containing links into one commom term
+            convert
+        '''
+        '''
+            collapse some of the feature which contains links into one commom term
             also remove non english words.
         '''
-        self.data['CONTETNT'] = self.data['CONTENT'].apply(lambda x :self. collapse_terms(x))
-
+        self.data['CONTENT'] = self.data['CONTENT'].apply(lambda x :self. collapse_terms(x))
+        return self.data
 
 if __name__ == "__main__":
     # Testing area
     obj1 = preprocess(['f1.csv','f2.csv','f3.csv','f4.csv','f5.csv'],['CONTENT','CLASS'])
-    obj1.pri()
-    obj1.read_and_clean()
+    data = obj1.read_and_clean()
     print(obj1.data.head())
