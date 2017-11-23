@@ -53,6 +53,7 @@ class preprocess(object):
         frames = [pd.read_csv(x) for x in self.file_]
         self.data = pd.concat(frames,axis=0,ignore_index=True)
         self.data = self.data[self.cols]
+        print("Input-Data size :",end=' ')
         print(self.data.shape)
 
         '''

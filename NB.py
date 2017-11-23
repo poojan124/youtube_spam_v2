@@ -31,7 +31,7 @@ class NBC(object):
         self.tokens_c1 = word_tokenize(self.c1)
         self.tokens_c2 = word_tokenize(self.c2)
         cnt_ = Counter(self.tokens_c1 + self.tokens_c2)
-        self.vocab = [x for x,y in cnt_.items() if y>0]
+        self.vocab = [x for x,y in cnt_.items()]
         self.V = len(self.vocab)
         self.tokens_c1 = [w for w in self.tokens_c1 if w in self.vocab]
         self.tokens_c2 = [w for w in self.tokens_c2 if w in self.vocab]
@@ -73,6 +73,8 @@ class NBC(object):
 
     #testing method
     def test_run(self):
+        print("Data-shape to be evaluate :",end=' ')
+        print(self.test_data.shape)
         op = []
         for idx,d in self.test_data.iterrows():
             op.append(self.predict(d['CONTENT']))
